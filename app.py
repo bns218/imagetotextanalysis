@@ -1,4 +1,3 @@
-%%writefile app.py
 from transformers import pipeline
 from PIL import Image
 import requests
