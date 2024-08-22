@@ -18,7 +18,6 @@ This application uses a combination of image captioning and sentiment analysis m
    ```bash
    git clone https://github.com/your-username/your-repo.git
    cd your-repo
-Sure! This code sets up a Streamlit web application that performs image captioning and sentiment analysis. Here’s a breakdown of how it works:
 
 ### Libraries and Models
 
