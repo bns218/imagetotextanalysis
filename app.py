@@ -1,51 +1,37 @@
-import streamlit as st
+%%writefile app.py
 from transformers import pipeline
 from PIL import Image
 import requests
+import streamlit as st
 from io import BytesIO
 
-# Load BLIP model and processor
+# Load BLIP model for image captioning
 image_to_text = pipeline("image-to-text", model="Salesforce/blip-image-captioning-large")
 
 # Load sentiment analysis model
 emotion_classifier = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment-latest")
 
-def generate_description(image_url):
+st.title("Image Description and Emotion Analysis")
+
+st.write("Enter an image URL:")
+image_url = st.text_input("Image URL")
+
+if image_url:
+    # Fetch the image from the URL
     response = requests.get(image_url)
     image = Image.open(BytesIO(response.content))
-
-    # Preprocess the image and generate description
+    
+    # Display the image in the Streamlit app
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+    
+    # Generate description from the image
     description = image_to_text(image)
-    return description[0]['generated_text']
-
-def analyze_emotion(description):
-    # Analyze the emotional tone of the description
-    result = emotion_classifier(description)
-    return result[0]['label']
-
-def main():
-    st.title("AI-Powered Artwork Description and Emotional Tone Analysis")
-
-    # Input: Image URL
-    image_url = st.text_input("Enter the image URL:")
-
-    if image_url:
-        try:
-            # Display the image
-            response = requests.get(image_url)
-            image = Image.open(BytesIO(response.content))
-            st.image(image, caption="Uploaded Image", use_column_width=True)
-
-            # Generate description
-            description = generate_description(image_url)
-            st.write("**Generated Description:**", description)
-
-            # Analyze emotional tone
-            emotion = analyze_emotion(description)
-            st.write("**Emotional Tone:**", emotion)
-
-        except Exception as e:
-            st.error(f"Error: {e}")
-
-if __name__ == "__main__":
-    main()
+    description_text = description[0]['generated_text']
+    
+    # Perform sentiment analysis on the generated description
+    emotion = emotion_classifier(description_text)
+    emotion_label = emotion[0]['label']
+    
+    # Display results
+    st.write("Generated Description:", description_text)
+    st.write("Emotional Tone:", emotion_label)
