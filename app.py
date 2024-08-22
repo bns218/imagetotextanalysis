@@ -27,15 +27,9 @@ if image_url:
     # Analyze the emotional tone of the description
     result = emotion_classifier(description)
     return result[0]['label']
-elif st.button("Generate Description and Analyze Emotion"):
+else st.button("Generate Description and Analyze Emotion"):
   description = generate_description(image_url)
   st.write("Generated Description:", description)
-  emotion = analyze_emotion(description)
-  st.write("Emotional Tone:", emotion)
-elif st.button("Generate Description"):
-  description = generate_description(image_url)
-  st.write("Generated Description:", description)
-elif st.button("Analyze Emotion"):
   emotion = analyze_emotion(description)
   st.write("Emotional Tone:", emotion)
   # Display the image
