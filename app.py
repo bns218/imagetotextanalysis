@@ -17,24 +17,12 @@ image_url = st.text_input("Image URL")
 
 if image_url:
   st.write("Image URL:", image_url)
-  def generate_description(image_url):
-    response = requests.get(image_url)
-    image = Image.open(BytesIO(response.content))
-    # Preprocess the image and generate description
-    description = image_to_text(image)
-    return description[0]['generated_text']
-  def analyze_emotion(description):
-    # Analyze the emotional tone of the description
-    result = emotion_classifier(description)
-    return result[0]['label']
-if st.button("Generate Description and Analyze Emotion"):
-  description = generate_description(image_url)
-  st.write("Generated Description:", description)
-  emotion = analyze_emotion(description)
-  st.write("Emotional Tone:", emotion)
-  # Display the image
-  st.image(image_url, caption="Uploaded Image", use_column_width=True)
-  # Display the generated description and emotional tone
+  response = requests.get(image_url)
+  image = Image.open(BytesIO(response.content))
+  # Preprocess the image and generate description
+  description = image_to_text(image)
+  description = description[0]['generated_text']  
+  emotion = emotion_classifier(description)
+  emotion = emotion[0]['label']
   st.write("Generated Description:", description)
   st.write("Emotional Tone:", emotion)
-  st.stop()
