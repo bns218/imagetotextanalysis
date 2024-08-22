@@ -27,7 +27,7 @@ if image_url:
     # Analyze the emotional tone of the description
     result = emotion_classifier(description)
     return result[0]['label']
-else st.button("Generate Description and Analyze Emotion"):
+if st.button("Generate Description and Analyze Emotion"):
   description = generate_description(image_url)
   st.write("Generated Description:", description)
   emotion = analyze_emotion(description)
